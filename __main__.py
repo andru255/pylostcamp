@@ -2,26 +2,12 @@ from __future__ import print_function, division
 from datetime import datetime
 import math, pygame, sys, abc
 from pygame.locals import *
-from player import Player
-from pyengine import AbstractComponent
+from pyengine import ComponentManager
 
-class DemoPlayerComponent(AbstractComponent):
-    def __init__(self, surface, asset, (x, y)):
-        self.width = 50
-        self.height = 50
-        self.x = x
-        self.y = y
-        self.surface = surface
-        self.instance = asset(self.width, self.height, self.x, self.y)
-
-    def listen_mouse(self, event, mouse):
-        print("listening mouse")
-
-    def listen_keyboard(self, event):
-        print("listening keyboard")
-
-    def update(self, surface):
-        self.instance.blit(surface, (self.x, self.y))
+# fixtures
+from fixture_square import FixtureSquare
+#components
+from component_player import ComponentPlayer
 
 #init
 pygame.init()
@@ -42,8 +28,13 @@ background.fill(WINDOW_COLOR)
 background = background.convert()
 
 #setting players
-#game_player = GamePlayer(WINDOW, Player, ( WINDOW.get_rect().centerx, WINDOW.get_rect().centery ))
-demo = DemoPlayerComponent(WINDOW, Player, ( WINDOW.get_rect().centerx, WINDOW.get_rect().centery ))
+components = [
+    ComponentPlayer(WINDOW, FixtureSquare, (WINDOW.get_rect().centerx, WINDOW.get_rect().centery))
+]
+component_manager = ComponentManager()
+for item in components:
+    component_manager.register(item)
+component_manager.init_all()
 
 # Listen if press quit controls
 def is_quit(event_instance, (quit, keydown, escape)):
@@ -55,7 +46,7 @@ def is_quit(event_instance, (quit, keydown, escape)):
     return True
 
 # loop
-def loop(instance):
+def loop():
     is_run = True
     while is_run:
         # clean the screen
@@ -64,13 +55,14 @@ def loop(instance):
         for event in pygame.event.get():
             is_run = is_quit(event, (pygame.QUIT, pygame.KEYDOWN, pygame.K_ESCAPE))
             if event.type == pygame.MOUSEMOTION:
-                instance.listen_mouse(event, pygame.mouse)
+                component_manager.listen_mouse(event, pygame.mouse)
             elif event.type == pygame.K_DOWN or event.type == pygame.KEYUP:
-                instance.listen_keyboard(event)
+                component_manager.listen_keyboard(event)
         # looping ever
-        instance.update(WINDOW)
+        #instance.update(WINDOW)
+        component_manager.run_all(WINDOW)
         ## to RENDER SOME DRAW/GRAPHIC!-> pygame.display.flip()
         pygame.display.flip()
         FPS_CLOCK.tick(FPS)
 
-loop(demo)
+loop()

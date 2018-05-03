@@ -1,6 +1,9 @@
 import pygame
 
-class Player(object):
+class FixtureSquare(object):
+    """
+        Single class to display a Square
+    """
     def __init__(self, width=0, height=0, x=0, y=0, color=(0,255,255)):
         self.width = width
         self.height = height
