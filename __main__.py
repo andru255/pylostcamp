@@ -3,7 +3,10 @@ from datetime import datetime
 import math, pygame, sys, abc
 from pygame.locals import *
 
+#importing the microengine
 from engine import Engine
+
+# importing scenes
 from scenes import *
 
 #from pyengine import ComponentManager
@@ -13,13 +16,7 @@ from scenes import *
 #components
 #from component_player import ComponentPlayer
 
-#init
-#pygame.init()
-
-#scenes
-home_scene = SceneHome()
-
-##constants
+# constants
 FPS = 30
 FPS_CLOCK = pygame.time.Clock()
 WINDOW_COLOR = (132, 0, 0)
@@ -28,8 +25,12 @@ WINDOW_HEIGHT = 480
 WINDOW = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
 TITLE = "pyLostCamp"
 
+# entities
+
+# config main gameengine
 main = Engine(TITLE, FPS, (WINDOW_WIDTH, WINDOW_HEIGHT))
-main.add_scene('home', home_scene)
+main.add_scene('home', SceneHome())
+main.add_scene('camp', SceneCamp())
 main.loop()
 
 #only when starts

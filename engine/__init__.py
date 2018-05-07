@@ -47,6 +47,7 @@ class Engine(AbstractEngine):
     
         self.window.blit(self.default_background, (0, 0))
         while current_scene != None:
+            current_scene.did_load(self.scenes)
             pressed_keys = pygame.key.get_pressed()
             filtered_events = []
             #event filtering
