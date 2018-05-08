@@ -4,6 +4,7 @@ import pygame
 import sys
 from scene import *
 from entity import *
+from debugger import *
 
 class Engine(AbstractEngine):
     def __init__(self, caption="PyMicroEngine2D", fps=30, size=(800, 600)):
@@ -19,6 +20,9 @@ class Engine(AbstractEngine):
 
         #start pygame
         pygame.init()
+
+        #debugger instance
+        self.debug_bar = Debugger(self.window)
 
     def add_scene(self, name, scene_self):
         self.scenes[name] = scene_self
@@ -61,5 +65,6 @@ class Engine(AbstractEngine):
             current_scene.update()
             current_scene.render(self.window)
             current_scene = current_scene.next
+            self.debug_bar.draw(self.window, pygame.mouse) 
             pygame.display.flip()
             clock.tick(self.fps)
