@@ -51,7 +51,7 @@ class Engine(AbstractEngine):
     
         self.window.blit(self.default_background, (0, 0))
         while current_scene != None:
-            current_scene.did_load(self.scenes)
+            current_scene.did_load(self.window, self.scenes)
             pressed_keys = pygame.key.get_pressed()
             filtered_events = []
             #event filtering
@@ -65,6 +65,6 @@ class Engine(AbstractEngine):
             current_scene.update()
             current_scene.render(self.window)
             current_scene = current_scene.next
-            self.debug_bar.draw(self.window, pygame.mouse) 
+            self.debug_bar.draw(self.window, pygame.mouse, clock.get_fps()) 
             pygame.display.flip()
             clock.tick(self.fps)

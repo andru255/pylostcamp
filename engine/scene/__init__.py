@@ -18,7 +18,7 @@ class Scene(AbstractEscene):
     def get_all(self):
         return self.uientities
 
-    def did_load(self, scenes):
+    def did_load(self, window, scenes):
         if self.is_did_load_once == False:
             self.scenes = scenes
             self.is_did_load_once = True

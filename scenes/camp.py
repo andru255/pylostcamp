@@ -5,7 +5,7 @@ class SceneCamp(Scene):
     def __init__(self):
         Scene.__init__(self)
     
-    def did_load(self, scenes):
+    def did_load(self, window, scenes):
         super
 
     def listen_inputs(self, events, pressed_keys):
