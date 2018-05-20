@@ -2,6 +2,8 @@ from abstract import AbstractEngine
 
 import pygame
 import sys
+from scene_director import SceneDirector
+
 from scene import *
 from entity import *
 from debugger import *
@@ -10,8 +12,8 @@ class Engine(AbstractEngine):
     def __init__(self, caption="PyMicroEngine2D", fps=30, size=(800, 600)):
         self.fps = fps
         self.size = size
-        self.scenes = {}
         self.window = pygame.display.set_mode(self.size)
+        self.scene_director = SceneDirector.getInstance() 
 
         #creating the default background
         background = pygame.Surface(size) 
@@ -24,12 +26,6 @@ class Engine(AbstractEngine):
         #debugger instance
         self.debug_bar = Debugger(self.window)
 
-    def add_scene(self, name, scene_self):
-        self.scenes[name] = scene_self
-
-    def show_escene(self, name):
-        pass
-    
     def quit_attempt(self, event, pressed_keys):
         if event.type == pygame.QUIT:
             return True
@@ -40,18 +36,16 @@ class Engine(AbstractEngine):
                 return True
             elif event.key == pygame.K_F4 and alt_pressed:
                 return True
+    
+    def add_scene(self, name, scene_self):
+        self.scene_director.add_scene(name, scene_self)
 
     def loop(self):
         clock = pygame.time.Clock()
-        if len(self.scenes) > 0:
-            scene_name = list(self.scenes.keys())[0]
-            current_scene = self.scenes[scene_name]
-        else:
-            sys.exit("Needs an scene. Ex: loop({'my_scene': my_scene})")
-    
-        self.window.blit(self.default_background, (0, 0))
-        while current_scene != None:
-            current_scene.did_load(self.window, self.scenes)
+        current_scene = self.scene_director.show_default_scene()
+        while self.scene_director.exists_current_scene():
+            self.window.blit(self.default_background, (0, 0))
+            current_scene.did_load(self.window, self.scene_director)
             pressed_keys = pygame.key.get_pressed()
             filtered_events = []
             #event filtering
@@ -64,7 +58,9 @@ class Engine(AbstractEngine):
             current_scene.listen_inputs(filtered_events, pressed_keys)
             current_scene.update()
             current_scene.render(self.window)
-            current_scene = current_scene.next
+            # update the current scene only it's different scene
+            if self.scene_director.get_current_scene() != current_scene:
+                current_scene = self.scene_director.get_current_scene()
             self.debug_bar.draw(self.window, pygame.mouse, clock.get_fps()) 
             pygame.display.flip()
             clock.tick(self.fps)

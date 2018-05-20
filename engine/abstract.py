@@ -9,7 +9,3 @@ class AbstractEngine(object):
     @abc.abstractmethod
     def add_scene(self, name, scene_self):
         raise NotImplementedError('needs add method')
-
-    @abc.abstractmethod
-    def show_escene(self, name):
-        raise NotImplementedError('needs remove method')

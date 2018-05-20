@@ -1,5 +1,13 @@
 from abstract import AbstractEscene
 
+def run_once(f):
+    def wrapper(*args, **kwargs):
+        if not wrapper.has_run:
+            wrapper.has_run = True
+            return f(*args, **kwargs)
+    wrapper.has_run = False
+    return wrapper
+
 class Scene(AbstractEscene):
     uientities = {}
     is_did_load_once = False
@@ -18,10 +26,9 @@ class Scene(AbstractEscene):
     def get_all(self):
         return self.uientities
 
-    def did_load(self, window, scenes):
-        if self.is_did_load_once == False:
-            self.scenes = scenes
-            self.is_did_load_once = True
+    @run_once
+    def did_load(self, window, scene_director):
+        print("Needs to override that method did_load")
 
     def listen_inputs(self, events, pressed_keys):
         print("Needs to override that method")
