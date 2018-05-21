@@ -10,17 +10,17 @@ from engine import Engine
 from scenes import *
 
 # constants
-FPS = 30
+FPS = 60
 FPS_CLOCK = pygame.time.Clock()
 WINDOW_COLOR = (132, 0, 0)
-WINDOW_WIDTH = 640
-WINDOW_HEIGHT = 480
+WINDOW_WIDTH = 800
+WINDOW_HEIGHT = 600
 WINDOW = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
 TITLE = "pyLostCamp"
 
 # config main gameengine
 main = Engine(TITLE, FPS, (WINDOW_WIDTH, WINDOW_HEIGHT))
 main.add_scene('home', SceneHome())
-#main.add_scene('pong', ScenePong())
-#main.add_scene('camp', SceneCamp())
+main.add_scene('pong', ScenePong())
+main.add_scene('camp', SceneCamp())
 main.loop()

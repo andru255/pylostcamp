@@ -7,11 +7,9 @@ class SceneCamp(Scene):
         Scene.__init__(self)
     
     def did_load(self, window, scene_director):
-        Scene.did_load(self, window, scene_director)
         self.scene_director = scene_director
         self.btnGoHome = UIButton()
         self.btnGoHome.fixture(color=(100, 100, 100), position=(20, 20)).foreground(text="HOME")
-        super
 
     def listen_inputs(self, events, pressed_keys):
         for event in events:

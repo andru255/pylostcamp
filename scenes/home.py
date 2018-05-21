@@ -2,22 +2,12 @@ from engine import Scene
 from ui_entities import UIButton
 import pygame
 
-def run_once(f):
-    def wrapper(*args, **kwargs):
-        if not wrapper.has_run:
-            wrapper.has_run = True
-            return f(*args, **kwargs)
-    wrapper.has_run = False
-    return wrapper
-
 class SceneHome(Scene):
     def __init__(self):
         Scene.__init__(self)
         self.all_sprites_list = pygame.sprite.Group()
 
-    @run_once
     def did_load(self, window, scene_director):
-        Scene.did_load(self, window, scene_director)
         self.scene_director = scene_director
         self.btnGoPong = UIButton()
         self.btnGoCamp = UIButton()
@@ -25,6 +15,7 @@ class SceneHome(Scene):
         # settings
         self.btnGoPong.fixture(color=(100, 100, 100), position=(centerX, 100)).foreground(text="Go Pong")
         self.btnGoCamp.fixture(position=(centerX, 180)).foreground(text="Go Camp")
+        print("renice!")
 
     def listen_inputs(self, events, pressed_keys):
         for event in events:

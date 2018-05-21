@@ -1,6 +1,6 @@
 import abc
 
-class AbstractEscene(object):
+class AbstractScene(object):
     __metaclass__ = abc.ABCMeta
 
     def __init__(self, surface):

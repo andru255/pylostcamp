@@ -39,13 +39,13 @@ class Engine(AbstractEngine):
     
     def add_scene(self, name, scene_self):
         self.scene_director.add_scene(name, scene_self)
-
+    
     def loop(self):
         clock = pygame.time.Clock()
         current_scene = self.scene_director.show_default_scene()
         while self.scene_director.exists_current_scene():
             self.window.blit(self.default_background, (0, 0))
-            current_scene.did_load(self.window, self.scene_director)
+            self.scene_director.load_scene(current_scene, self.window, self.scene_director)
             pressed_keys = pygame.key.get_pressed()
             filtered_events = []
             #event filtering

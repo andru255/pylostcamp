@@ -13,6 +13,7 @@ class SceneDirector(object):
     def __init__(self):
         self.scenes = {}
         self.current_scene = None
+        self.current_scene_did_load = False
 
         if SceneDirector.__instance != None:
             raise Exception("SceneDirector is a Singleton class!!")
@@ -25,8 +26,14 @@ class SceneDirector(object):
     def go_scene(self, name):
         if name in self.scenes:
             self.current_scene = self.scenes[name]
+            self.current_scene_did_load = False
         else:
             raise Exception("Don't exists escene with name: ", name)
+
+    def load_scene(self, scene, *args):
+        if self.current_scene_did_load is False:
+            scene.did_load(*args)
+            self.current_scene_did_load = True
 
     def show_default_scene(self):
         if len(self.scenes) > 0:
