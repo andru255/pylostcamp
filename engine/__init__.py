@@ -47,15 +47,13 @@ class Engine(AbstractEngine):
             self.window.blit(self.default_background, (0, 0))
             self.scene_director.load_scene(current_scene, self.window, self.scene_director)
             pressed_keys = pygame.key.get_pressed()
-            filtered_events = []
             #event filtering
             for event in pygame.event.get():
                 if self.quit_attempt(event, pressed_keys):
                     pygame.quit()
                     sys.exit()
                 else:
-                    filtered_events.append(event)
-            current_scene.listen_inputs(filtered_events, pressed_keys)
+                    current_scene.listen_inputs(event, pressed_keys)
             current_scene.update()
             current_scene.render(self.window)
             # update the current scene only it's different scene

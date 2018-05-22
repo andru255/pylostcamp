@@ -17,14 +17,13 @@ class SceneHome(Scene):
         self.btnGoCamp.fixture(position=(centerX, 180)).foreground(text="Go Camp")
         print("renice!")
 
-    def listen_inputs(self, events, pressed_keys):
-        for event in events:
-            if event.type == pygame.KEYDOWN and event.key == pygame.K_1:
-                print("Move to pong escene")
-                self.scene_director.go_scene('pong')
-            if event.type == pygame.KEYDOWN and event.key == pygame.K_2:
-                print("Move to camp escene")
-                self.scene_director.go_scene('camp')
+    def listen_inputs(self, event, pressed_keys):
+        if event.type == pygame.KEYDOWN and event.key == pygame.K_1:
+            print("Move to pong escene")
+            self.scene_director.go_scene('pong')
+        if event.type == pygame.KEYDOWN and event.key == pygame.K_2:
+            print("Move to camp escene")
+            self.scene_director.go_scene('camp')
 
         if pygame.mouse.get_pressed()[0]:
             mouse_position = pygame.mouse.get_pos()

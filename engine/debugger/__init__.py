@@ -3,8 +3,9 @@ import pygame
 class Debugger(object):
     def __init__(self, window):
         # creating a empty surface
-        surface = pygame.Surface(( window.get_width(), window.get_height() - 80))
-        self.surface = surface.convert()
+        surface = pygame.Surface(( window.get_width(), window.get_height() - 80), pygame.SRCALPHA, 32)
+        self.surface = surface.convert_alpha()
+        self.surface.set_alpha(0)
 
         # defining a position
         self.rect = (0, window.get_height() - 80)
@@ -15,7 +16,7 @@ class Debugger(object):
 
     def draw(self, window, mouse, fps):
         #filling everytime
-        self.surface.fill((120, 120, 120))
+        self.surface.fill((120, 120, 120, 50))
 
         #screen dimentions
         self.dimentions_logger.draw(self.surface)

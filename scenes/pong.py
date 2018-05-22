@@ -7,32 +7,31 @@ class ScenePong(Scene):
         Scene.__init__(self)
 
     def did_load(self, window, scene_director):
+        self.window_height = window.get_height()
         self.scene_director = scene_director
         self.btnGoHome = UIButton()
         self.btnGoHome.fixture(color=(100, 100, 100), position=(20, 20)).foreground(text="HOME")
         # paddles
         print("center", window.get_rect().centerx)
         self.player = Paddle(position=(20, window.get_rect().centery - 100))
-    
-    def listen_inputs(self, events, pressed_keys):
-        for event in events:
-            # go home
-            if event.type == pygame.KEYDOWN and event.key == pygame.K_BACKSPACE:
-                self.scene_director.go_scene('home')
 
+    def listen_inputs(self, event, pressed_keys):
+        # go home
+        if pressed_keys[pygame.K_BACKSPACE]:
+            self.scene_director.go_scene('home')
+
+        if event.type == pygame.KEYDOWN:
             # step up
             if event.key == pygame.K_UP:
-                if event.type == pygame.KEYDOWN:
-                    self.player.step_up()
-                elif event.type == pygame.KEYUP:
-                    self.player.stop()
-            
+                self.player.step_up()
             # step down
-            if event.key == pygame.K_DOWN:
-                if event.type == pygame.KEYDOWN:
-                    self.player.step_down()
-                elif event.type == pygame.KEYUP:
-                    self.player.stop()
+            elif event.key == pygame.K_DOWN:
+                self.player.step_down()
+        elif event.type == pygame.KEYUP:
+            if event.key == pygame.K_UP:
+                self.player.stop()
+            elif event.key == pygame.K_DOWN:
+                self.player.stop()
 
         if pygame.mouse.get_pressed()[0]:
             mouse_position = pygame.mouse.get_pos()
@@ -40,7 +39,7 @@ class ScenePong(Scene):
                 self.scene_director.go_scene('home')
     
     def update(self):
-        self.player.update()
+        self.player.update(self.window_height)
     
     def render(self, window):
         Scene.render(self, window)
@@ -81,7 +80,7 @@ class Paddle(pygame.sprite.Sprite):
         self.do_stop = False
         self.down = True
 
-    def update(self):
+    def update(self, window_height):
         if not self.do_stop:
             if self.up:
                 self.velocity_y -= self.acceleration
@@ -97,6 +96,14 @@ class Paddle(pygame.sprite.Sprite):
         self.velocity_y *= self.friction
         self.position_y += self.velocity_y
         self.position = (self.position[0],  self.position_y)
+        self.contain_into(window_height)
+
+    def contain_into(self, height):
+        max_y = max(0, self.position[1])
+        self.position = (self.position[0],  max_y)
+
+        min_y = min(height - self.size[1], self.position[1])
+        self.position = (self.position[0],  min_y)
 
     def draw(self, surface):
         self.inner_surface.fill(self.color)
