@@ -18,10 +18,10 @@ class SceneHome(Scene):
         print("renice!")
 
     def listen_inputs(self, event, pressed_keys):
-        if event.type == pygame.KEYDOWN and event.key == pygame.K_1:
+        if pressed_keys[pygame.K_1]:
             print("Move to pong escene")
             self.scene_director.go_scene('pong')
-        if event.type == pygame.KEYDOWN and event.key == pygame.K_2:
+        if pressed_keys[pygame.K_2]:
             print("Move to camp escene")
             self.scene_director.go_scene('camp')
 
